@@ -8,6 +8,7 @@ import {
   useColorScheme,
   View,
   Text,
+  AppState,
 } from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
 
@@ -16,6 +17,8 @@ function App(): JSX.Element {
   const [elapsedTime, setElapsedTime] = useState<number>(0);
 
   const timerId = useRef<NodeJS.Timeout | null>(null);
+  const appState = useRef<string>(AppState.currentState);
+  const backgroundTime = useRef<number>(Date.now());
 
   const isDarkMode = useColorScheme() === 'dark';
 
@@ -49,12 +52,38 @@ function App(): JSX.Element {
   };
 
   useEffect(() => {
-    return () => {
-      if (timerId.current) {
-        clearTimeout(timerId.current);
+    const handleAppStateChange = (nextAppState: string) => {
+      if (!isRunning) {
+        return;
       }
+
+      if (
+        appState.current.match(/inactive|background/) &&
+        nextAppState === 'active'
+      ) {
+        const currentTime = Date.now();
+        const elapsed = Math.floor(
+          (currentTime - backgroundTime.current) / 1000,
+        );
+        setElapsedTime(prevElapsedTime => prevElapsedTime + elapsed);
+      } else if (
+        appState.current === 'active' &&
+        nextAppState.match(/inactive|background/)
+      ) {
+        backgroundTime.current = Date.now();
+      }
+      appState.current = nextAppState;
     };
-  }, []);
+
+    const subscription = AppState.addEventListener(
+      'change',
+      handleAppStateChange,
+    );
+
+    return () => {
+      subscription.remove();
+    };
+  }, [isRunning]);
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -69,9 +98,19 @@ function App(): JSX.Element {
           </View>
 
           {elapsedTime ? (
-            <TouchableOpacity style={styles.button} onPress={pauseTimer}>
-              <Text style={styles.buttonTitle}>Pausar sessão</Text>
-            </TouchableOpacity>
+            <>
+              {isRunning && (
+                <TouchableOpacity style={styles.button} onPress={pauseTimer}>
+                  <Text style={styles.buttonTitle}>Pausar sessão</Text>
+                </TouchableOpacity>
+              )}
+
+              {!isRunning && (
+                <TouchableOpacity style={styles.button} onPress={startTimer}>
+                  <Text style={styles.buttonTitle}>Continuar sessão</Text>
+                </TouchableOpacity>
+              )}
+            </>
           ) : (
             <TouchableOpacity style={styles.button} onPress={startTimer}>
               <Text style={styles.buttonTitle}>Iniciar sessão</Text>
