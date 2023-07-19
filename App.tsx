@@ -15,9 +15,9 @@ import ReadingSessionModule from './ReadingSessionModule';
 
 function App(): JSX.Element {
   const [isRunning, setIsRunning] = useState<boolean>(false);
-  const [startTimerTime, setStartTimerTime] = useState<number>(0);
   const [elapsedSeconds, setElapsedSeconds] = useState<number>(0);
 
+  const startTimerTime = useRef<number>(0);
   const timerId = useRef<NodeJS.Timeout | null>(null);
   const appState = useRef<string>(AppState.currentState);
 
@@ -49,7 +49,7 @@ function App(): JSX.Element {
       if (elapsedSeconds) {
         ReadingSessionModule.startLiveActivity(elapsedSeconds);
       } else {
-        setStartTimerTime(Date.now());
+        startTimerTime.current = Date.now();
         ReadingSessionModule.startLiveActivity(0);
       }
     }
@@ -93,7 +93,9 @@ function App(): JSX.Element {
       ) {
         const currentTime = Date.now();
 
-        setElapsedSeconds(Math.floor((currentTime - startTimerTime) / 1000));
+        setElapsedSeconds(
+          Math.floor((currentTime - startTimerTime.current) / 1000),
+        );
       }
 
       appState.current = nextAppState;
@@ -107,7 +109,7 @@ function App(): JSX.Element {
     return () => {
       subscription.remove();
     };
-  }, [isRunning, startTimerTime]);
+  }, [isRunning]);
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
