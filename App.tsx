@@ -9,11 +9,9 @@ import {
   View,
   Text,
   AppState,
-  NativeModules,
 } from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
-
-const {ReadingSessionModule} = NativeModules;
+import ReadingSessionModule from './ReadingSessionModule';
 
 function App(): JSX.Element {
   const [isRunning, setIsRunning] = useState<boolean>(false);
