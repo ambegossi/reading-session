@@ -12,26 +12,31 @@ import SwiftUI
 struct ReadingSessionWidgetLiveActivity: Widget {
     var body: some WidgetConfiguration {
         ActivityConfiguration(for: ReadingSessionLiveActivityAttributes.self) { context in
-            // Lock screen/banner UI goes here
-            VStack {
-                Text("Hello")
-            }
-            .activityBackgroundTint(Color.cyan)
-            .activitySystemActionForegroundColor(Color.black)
-            
+            LockScreenLiveActivityView(context: context)
         } dynamicIsland: { context in
             DynamicIsland {
-                // Expanded UI goes here.  Compose the expanded UI through
-                // various regions, like leading/trailing/center/bottom
-                DynamicIslandExpandedRegion(.leading) {
-                    Text("Leading")
+              DynamicIslandExpandedRegion(.leading) {
+                    Text("A regra é não ter regras")
+                      .lineLimit(nil)
+                      .fixedSize(horizontal: false, vertical: true)
+                      .multilineTextAlignment(.leading)
                 }
                 DynamicIslandExpandedRegion(.trailing) {
-                    Text("Trailing")
+                    Text("Reed Hastings")
+                      .lineLimit(nil)
+                      .fixedSize(horizontal: false, vertical: true)
+                      .multilineTextAlignment(.trailing)
                 }
                 DynamicIslandExpandedRegion(.bottom) {
-                    Text("Bottom")
-                    // more content
+                    let now = Date.now
+                    let elapsedSeconds = context.state.elapsedSeconds
+                    let start = Calendar.current.date(byAdding: .second, value: -elapsedSeconds, to: now)!
+                    let end = Calendar.current.date(byAdding: .hour, value: Int(8), to: Date.now)!
+                  
+                    Text(timerInterval: start...end, countsDown: false)
+                        .multilineTextAlignment(.center)
+                        .font(.title)
+                        .foregroundColor(.orange)
                 }
             } compactLeading: {
               let now = Date.now
@@ -44,8 +49,56 @@ struct ReadingSessionWidgetLiveActivity: Widget {
               Image(systemName: "book")
                   .foregroundColor(.orange)
             } minimal: {
-                Text("Min")
+              Image(systemName: "book")
+                  .foregroundColor(.orange)
             }
         }
     }
 }
+
+struct LockScreenLiveActivityView: View {
+    let context: ActivityViewContext<ReadingSessionLiveActivityAttributes>
+    
+    var body: some View {
+        let now = Date.now
+        let elapsedSeconds = context.state.elapsedSeconds
+        let start = Calendar.current.date(byAdding: .second, value: -elapsedSeconds, to: now)!
+        let end = Calendar.current.date(byAdding: .hour, value: Int(8), to: Date.now)!
+      
+        VStack() {
+            Spacer()
+            Text("A regra é não ter regras")
+            Spacer()
+            Text("Reed Hastings")
+                .font(.caption)
+            Spacer()
+            Text(timerInterval: start...end, countsDown: false)
+                .multilineTextAlignment(.center)
+                .font(.title)
+                .foregroundColor(.orange)
+            Spacer()
+        }
+    }
+}
+
+/*
+struct ReadingSessionWidgetLiveActivity_Previews: PreviewProvider {
+    static let attributes = ReadingSessionLiveActivityAttributes()
+    static let contentState = ReadingSessionLiveActivityAttributes.ContentState(elapsedSeconds: 20)
+
+    static var previews: some View {
+        attributes
+            .previewContext(contentState, viewKind: .dynamicIsland(.compact))
+            .previewDisplayName("Island Compact")
+        attributes
+            .previewContext(contentState, viewKind: .dynamicIsland(.expanded))
+            .previewDisplayName("Island Expanded")
+        attributes
+            .previewContext(contentState, viewKind: .dynamicIsland(.minimal))
+            .previewDisplayName("Minimal")
+        attributes
+            .previewContext(contentState, viewKind: .content)
+            .previewDisplayName("Notification")
+    }
+}
+ */
