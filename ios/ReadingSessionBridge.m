@@ -9,7 +9,7 @@
 
 @interface RCT_EXTERN_MODULE(ReadingSessionModule, NSObject)
 
-RCT_EXTERN_METHOD(startLiveActivity:(NSString *)time)
+RCT_EXTERN_METHOD(startLiveActivity:(nonnull NSNumber *)elapsedSeconds)
 RCT_EXTERN_METHOD(endLiveActivity)
 
 @end

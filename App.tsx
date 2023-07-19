@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {
   SafeAreaView,
   ScrollView,
@@ -17,20 +17,43 @@ const {ReadingSessionModule} = NativeModules;
 
 function App(): JSX.Element {
   const [isRunning, setIsRunning] = useState<boolean>(false);
-  const [elapsedTime, setElapsedTime] = useState<number>(0);
+  const [startTimerTime, setStartTimerTime] = useState<number>(0);
+  const [elapsedSeconds, setElapsedSeconds] = useState<number>(0);
 
   const timerId = useRef<NodeJS.Timeout | null>(null);
   const appState = useRef<string>(AppState.currentState);
-  const backgroundTime = useRef<number>(Date.now());
 
   const isDarkMode = useColorScheme() === 'dark';
+
+  const elapsedTime = useMemo(() => {
+    const hours = Math.floor(elapsedSeconds / 3600);
+    const minutes = Math.floor((elapsedSeconds % 3600) / 60);
+    const seconds = elapsedSeconds % 60;
+
+    let formattedTime = '';
+
+    if (hours > 0) {
+      formattedTime += `${hours.toString()}:`;
+    }
+
+    formattedTime += `${minutes.toString()}:${seconds
+      .toString()
+      .padStart(2, '0')}`;
+
+    return formattedTime;
+  }, [elapsedSeconds]);
 
   const startTimer = () => {
     if (!isRunning) {
       setIsRunning(true);
       timerId.current = setTimeout(updateTimer, 1000);
 
-      ReadingSessionModule.startLiveActivity(20);
+      if (elapsedSeconds) {
+        ReadingSessionModule.startLiveActivity(elapsedSeconds);
+      } else {
+        setStartTimerTime(Date.now());
+        ReadingSessionModule.startLiveActivity(0);
+      }
     }
   };
 
@@ -47,14 +70,16 @@ function App(): JSX.Element {
 
   const resetTimer = () => {
     setIsRunning(false);
-    setElapsedTime(0);
+    setElapsedSeconds(0);
     if (timerId.current) {
       clearTimeout(timerId.current);
     }
+
+    ReadingSessionModule.endLiveActivity();
   };
 
   const updateTimer = () => {
-    setElapsedTime(prev => prev + 1);
+    setElapsedSeconds(prev => prev + 1);
     timerId.current = setTimeout(updateTimer, 1000);
   };
 
@@ -69,16 +94,10 @@ function App(): JSX.Element {
         nextAppState === 'active'
       ) {
         const currentTime = Date.now();
-        const elapsed = Math.floor(
-          (currentTime - backgroundTime.current) / 1000,
-        );
-        setElapsedTime(prevElapsedTime => prevElapsedTime + elapsed);
-      } else if (
-        appState.current === 'active' &&
-        nextAppState.match(/inactive|background/)
-      ) {
-        backgroundTime.current = Date.now();
+
+        setElapsedSeconds(Math.floor((currentTime - startTimerTime) / 1000));
       }
+
       appState.current = nextAppState;
     };
 
@@ -90,7 +109,7 @@ function App(): JSX.Element {
     return () => {
       subscription.remove();
     };
-  }, [isRunning]);
+  }, [isRunning, startTimerTime]);
 
   return (
     <SafeAreaView style={styles.safeAreaView}>
@@ -104,7 +123,7 @@ function App(): JSX.Element {
             <Text style={styles.elapsedTime}>{elapsedTime}</Text>
           </View>
 
-          {elapsedTime ? (
+          {elapsedSeconds ? (
             <>
               {isRunning && (
                 <TouchableOpacity style={styles.button} onPress={pauseTimer}>
@@ -126,7 +145,7 @@ function App(): JSX.Element {
 
           <TouchableOpacity
             style={StyleSheet.compose(styles.resetSessionButton, {
-              opacity: elapsedTime ? 1 : 0,
+              opacity: elapsedSeconds ? 1 : 0,
             })}
             onPress={resetTimer}>
             <Text style={styles.buttonTitle}>Resetar sessão</Text>
@@ -171,7 +190,7 @@ const styles = StyleSheet.create({
   },
   buttonTitle: {
     color: 'white',
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
   },
   resetSessionButton: {

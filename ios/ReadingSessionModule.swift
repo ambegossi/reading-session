@@ -11,9 +11,9 @@ import ActivityKit
 class ReadingSessionModule: NSObject {
   
   @objc(startLiveActivity:)
-  func startLiveActivity(time: String) {
-    let initialContentState = ReadingSessionLiveActivityAttributes.ContentState(value: 2)
-    let activityAttributes = ReadingSessionLiveActivityAttributes(name: "Name")
+  func startLiveActivity(elapsedSeconds: NSNumber) {
+    let initialContentState = ReadingSessionLiveActivityAttributes.ContentState(elapsedSeconds: Int(truncating: elapsedSeconds))
+    let activityAttributes = ReadingSessionLiveActivityAttributes()
     
     do {
       if #available(iOS 16.1, *) {
