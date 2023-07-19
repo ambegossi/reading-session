@@ -9,8 +9,11 @@ import {
   View,
   Text,
   AppState,
+  NativeModules,
 } from 'react-native';
 import {Colors} from 'react-native/Libraries/NewAppScreen';
+
+const {ReadingSessionModule} = NativeModules;
 
 function App(): JSX.Element {
   const [isRunning, setIsRunning] = useState<boolean>(false);
@@ -26,6 +29,8 @@ function App(): JSX.Element {
     if (!isRunning) {
       setIsRunning(true);
       timerId.current = setTimeout(updateTimer, 1000);
+
+      ReadingSessionModule.startLiveActivity(20);
     }
   };
 
@@ -35,6 +40,8 @@ function App(): JSX.Element {
       if (timerId.current) {
         clearTimeout(timerId.current);
       }
+
+      ReadingSessionModule.endLiveActivity();
     }
   };
 
