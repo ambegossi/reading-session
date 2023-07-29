@@ -46,11 +46,18 @@ function App(): JSX.Element {
       setIsRunning(true);
       timerId.current = setTimeout(updateTimer, 1000);
 
+      const bookTitle = '12 Rules For Life';
+      const bookAuthor = 'Jordan B. Peterson';
+
       if (elapsedSeconds) {
-        ReadingSessionModule.startLiveActivity(elapsedSeconds);
+        ReadingSessionModule.startLiveActivity(
+          elapsedSeconds,
+          bookTitle,
+          bookAuthor,
+        );
       } else {
         startTimerTime.current = Date.now();
-        ReadingSessionModule.startLiveActivity(0);
+        ReadingSessionModule.startLiveActivity(0, bookTitle, bookAuthor);
       }
     }
   };

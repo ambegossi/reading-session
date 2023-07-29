@@ -3,7 +3,11 @@ import {NativeModules} from 'react-native';
 const {ReadingSessionModule} = NativeModules;
 
 interface ReadingSessionModuleInterface {
-  startLiveActivity: (elapsedSeconds: number) => void;
+  startLiveActivity: (
+    elapsedSeconds: number,
+    bookTitle: string,
+    bookAuthor: string,
+  ) => void;
   endLiveActivity: () => void;
 }
 

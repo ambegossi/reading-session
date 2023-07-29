@@ -10,10 +10,10 @@ import ActivityKit
 @objc(ReadingSessionModule)
 class ReadingSessionModule: NSObject {
   
-  @objc(startLiveActivity:)
-  func startLiveActivity(elapsedSeconds: NSNumber) {
+  @objc(startLiveActivity:bookTitle:bookAuthor:)
+  func startLiveActivity(elapsedSeconds: NSNumber, bookTitle: String, bookAuthor: String) {
     let initialContentState = ReadingSessionLiveActivityAttributes.ContentState(elapsedSeconds: Int(truncating: elapsedSeconds))
-    let activityAttributes = ReadingSessionLiveActivityAttributes()
+    let activityAttributes = ReadingSessionLiveActivityAttributes(bookTitle: bookTitle, bookAuthor: bookAuthor)
     
     do {
       if #available(iOS 16.1, *) {

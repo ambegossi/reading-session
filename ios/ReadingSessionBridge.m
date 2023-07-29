@@ -15,7 +15,9 @@
 }
 
 
-RCT_EXTERN_METHOD(startLiveActivity:(nonnull NSNumber *)elapsedSeconds)
+RCT_EXTERN_METHOD(startLiveActivity:(nonnull NSNumber *)elapsedSeconds
+                  bookTitle:(nonnull NSString *)bookTitle
+                  bookAuthor:(nonnull NSString *)bookAuthor)
 RCT_EXTERN_METHOD(endLiveActivity)
 
 @end

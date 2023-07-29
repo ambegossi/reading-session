@@ -12,4 +12,7 @@ struct ReadingSessionLiveActivityAttributes: ActivityAttributes {
     public struct ContentState: Codable, Hashable {
         var elapsedSeconds: Int
     }
+  
+    var bookTitle: String
+    var bookAuthor: String
 }

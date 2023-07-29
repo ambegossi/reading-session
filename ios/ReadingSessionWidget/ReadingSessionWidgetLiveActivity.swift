@@ -15,17 +15,17 @@ struct ReadingSessionWidgetLiveActivity: Widget {
             LockScreenLiveActivityView(context: context)
         } dynamicIsland: { context in
             DynamicIsland {
-              DynamicIslandExpandedRegion(.leading) {
-                    Text("A regra é não ter regras")
-                      .lineLimit(nil)
-                      .fixedSize(horizontal: false, vertical: true)
-                      .multilineTextAlignment(.leading)
+                DynamicIslandExpandedRegion(.leading) {
+                    Text("\(context.attributes.bookTitle)")
+                        .lineLimit(nil)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .multilineTextAlignment(.leading)
                 }
                 DynamicIslandExpandedRegion(.trailing) {
-                    Text("Reed Hastings")
-                      .lineLimit(nil)
-                      .fixedSize(horizontal: false, vertical: true)
-                      .multilineTextAlignment(.trailing)
+                    Text("\(context.attributes.bookAuthor)")
+                        .lineLimit(nil)
+                        .fixedSize(horizontal: false, vertical: true)
+                        .multilineTextAlignment(.trailing)
                 }
                 DynamicIslandExpandedRegion(.bottom) {
                     let timerInterval = calculateTimerInterval(context: context)
@@ -58,9 +58,9 @@ struct LockScreenLiveActivityView: View {
       
         VStack() {
             Spacer()
-            Text("A regra é não ter regras")
+            Text("\(context.attributes.bookTitle)")
             Spacer()
-            Text("Reed Hastings")
+            Text("\(context.attributes.bookAuthor)")
                 .font(.caption)
             Spacer()
             Text(timerInterval: timerInterval, countsDown: false)
