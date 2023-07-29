@@ -28,23 +28,17 @@ struct ReadingSessionWidgetLiveActivity: Widget {
                       .multilineTextAlignment(.trailing)
                 }
                 DynamicIslandExpandedRegion(.bottom) {
-                    let now = Date.now
-                    let elapsedSeconds = context.state.elapsedSeconds
-                    let start = Calendar.current.date(byAdding: .second, value: -elapsedSeconds, to: now)!
-                    let end = Calendar.current.date(byAdding: .hour, value: Int(8), to: Date.now)!
+                    let timerInterval = calculateTimerInterval(context: context)
                   
-                    Text(timerInterval: start...end, countsDown: false)
+                    Text(timerInterval: timerInterval, countsDown: false)
                         .multilineTextAlignment(.center)
                         .font(.title)
                         .foregroundColor(.orange)
                 }
             } compactLeading: {
-              let now = Date.now
-              let elapsedSeconds = context.state.elapsedSeconds
-              let start = Calendar.current.date(byAdding: .second, value: -elapsedSeconds, to: now)!
-              let end = Calendar.current.date(byAdding: .hour, value: Int(8), to: Date.now)!
+              let timerInterval = calculateTimerInterval(context: context)
                             
-              Text(timerInterval: start...end, countsDown: false)
+              Text(timerInterval: timerInterval, countsDown: false)
             } compactTrailing: {
               Image(systemName: "book")
                   .foregroundColor(.orange)
@@ -60,10 +54,7 @@ struct LockScreenLiveActivityView: View {
     let context: ActivityViewContext<ReadingSessionLiveActivityAttributes>
     
     var body: some View {
-        let now = Date.now
-        let elapsedSeconds = context.state.elapsedSeconds
-        let start = Calendar.current.date(byAdding: .second, value: -elapsedSeconds, to: now)!
-        let end = Calendar.current.date(byAdding: .hour, value: Int(8), to: Date.now)!
+        let timerInterval = calculateTimerInterval(context: context)
       
         VStack() {
             Spacer()
@@ -72,7 +63,7 @@ struct LockScreenLiveActivityView: View {
             Text("Reed Hastings")
                 .font(.caption)
             Spacer()
-            Text(timerInterval: start...end, countsDown: false)
+            Text(timerInterval: timerInterval, countsDown: false)
                 .multilineTextAlignment(.center)
                 .font(.title)
                 .foregroundColor(.orange)

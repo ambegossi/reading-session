@@ -21,6 +21,7 @@
 		E71F82DD2A67F7580042D031 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E71F82DC2A67F7580042D031 /* Assets.xcassets */; };
 		E71F82E12A67F7580042D031 /* ReadingSessionWidgetExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = E71F82D22A67F7570042D031 /* ReadingSessionWidgetExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		E71F82E52A67F7A80042D031 /* ReadingSessionLiveActivityAttributes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79F85C72A6610B900400305 /* ReadingSessionLiveActivityAttributes.swift */; };
+		E773BB632A75444A00392BB0 /* DateHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E773BB602A75444A00392BB0 /* DateHelpers.swift */; };
 		E79F85A52A6609EE00400305 /* ReadingSessionModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79F85A42A6609EE00400305 /* ReadingSessionModule.swift */; };
 		E79F85A62A6609EE00400305 /* ReadingSessionModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = E79F85A42A6609EE00400305 /* ReadingSessionModule.swift */; };
 		E79F85A82A6609FB00400305 /* ReadingSessionBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = E79F85A72A6609FB00400305 /* ReadingSessionBridge.m */; };
@@ -82,6 +83,7 @@
 		E71F82D82A67F7570042D031 /* ReadingSessionWidgetLiveActivity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingSessionWidgetLiveActivity.swift; sourceTree = "<group>"; };
 		E71F82DC2A67F7580042D031 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E71F82DE2A67F7580042D031 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E773BB602A75444A00392BB0 /* DateHelpers.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateHelpers.swift; sourceTree = "<group>"; };
 		E79F858D2A66023600400305 /* ReadingSession-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ReadingSession-Bridging-Header.h"; sourceTree = "<group>"; };
 		E79F858E2A66023600400305 /* ReadingSessionTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ReadingSessionTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		E79F85A42A6609EE00400305 /* ReadingSessionModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReadingSessionModule.swift; sourceTree = "<group>"; };
@@ -219,6 +221,7 @@
 				E71F82D82A67F7570042D031 /* ReadingSessionWidgetLiveActivity.swift */,
 				E71F82DC2A67F7580042D031 /* Assets.xcassets */,
 				E71F82DE2A67F7580042D031 /* Info.plist */,
+				E773BB602A75444A00392BB0 /* DateHelpers.swift */,
 			);
 			path = ReadingSessionWidget;
 			sourceTree = "<group>";
@@ -536,6 +539,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				E71F82D92A67F7570042D031 /* ReadingSessionWidgetLiveActivity.swift in Sources */,
+				E773BB632A75444A00392BB0 /* DateHelpers.swift in Sources */,
 				E71F82D72A67F7570042D031 /* ReadingSessionWidgetBundle.swift in Sources */,
 				E71F82E52A67F7A80042D031 /* ReadingSessionLiveActivityAttributes.swift in Sources */,
 			);
